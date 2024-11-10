@@ -1,4 +1,4 @@
-module control_block
+module controlUnit
     (
         input wire start,
         input wire reset,
@@ -7,8 +7,8 @@ module control_block
         input wire shiftedBit1, // сдвигаемый бит 1
 
         output reg ready, // готовность
-        output reg [2 : 0] ctrl_counter, // номер инструкции из счётчика
-        output reg [1 : 0] ctrl_shift_reg // номер инструкции из регистра
+        output reg [2 : 0] instrCnt, // номер инструкции из счётчика
+        output reg [1 : 0] instrShiftReg // номер инструкции из регистра
     );
     parameter max = 4'b1000; // максимальное кол-во бит последовательности
     parameter initialNumber = 4'b0000; // начальное состояние счётчика
@@ -35,38 +35,38 @@ module control_block
             begin
                 nextState = loadState;
                 ready = 0;
-                ctrl_shift_reg = 0;
-                ctrl_counter = 2'b11;
+                instrShiftReg = 0;
+                instrCnt = 2'b11;
             end
         end
         loadState:
         begin
             nextState = shiftState;
             ready = 0;
-            ctrl_shift_reg = 2'b11;
-            ctrl_counter = 3'b100;
+            instrShiftReg = 2'b11;
+            instrCnt = 3'b100;
         end
         shiftState:
         begin
             ready = 0;
-            ctrl_counter = {1'b0, shiftedBit0, shiftedBit1};
-	    // $display("getted IT %b", ctrl_counter);
-            ctrl_shift_reg = 2'b10;
+            instrCnt = {1'b0, shiftedBit0, shiftedBit1};
+	    // $display("getted IT %b", instrCnt);
+            instrShiftReg = 2'b10;
             nextState = nShifted == max ? finalState: currentState;
         end
         finalState:
         begin
             ready = 1;
-            ctrl_counter = 2'b10;
-            ctrl_shift_reg = 2'b00;
+            instrCnt = 2'b10;
+            instrShiftReg = 2'b00;
             nextState = initState;
         end
         default:
         begin
             nextState = loadState;
             ready = 0;
-            ctrl_shift_reg = 2'b00;
-            ctrl_counter = 2'b11;
+            instrShiftReg = 2'b00;
+            instrCnt = 2'b11;
         end
         endcase
     end

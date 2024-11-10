@@ -8,36 +8,36 @@ module main
     input wire start,
     input wire reset,
     input wire clock,
-    input wire [nBits - 1 : 0] in_data, // входная последовательность
+    input wire [nBits - 1 : 0] inData, // входная последовательность
     
     output wire ready, // готовность
-    output wire [nOutputBits - 1 : 0] out_data // кол-во переходов
+    output wire [nOutputBits - 1 : 0] outData // кол-во переходов
 );
 
 wire shiftedBit0;
 wire shiftedBit1;
-wire [1 : 0] ctrl_shift_reg;
-wire [2 : 0] ctrl_counter;
+wire [1 : 0] instrShiftReg;
+wire [2 : 0] instrCnt;
 
-counter_block v1(
+counterUnit v1(
     .reset(reset),
     .clock(clock),
-    .instruction(ctrl_counter),
+    .instruction(instrCnt),
 
-    .result(out_data)
+    .result(outData)
 );
 
-shift_register_block v2(
+shiftRegister v2(
     .reset(reset),
     .clock(clock),
-    .inputBits(in_data),
-    .instruction(ctrl_shift_reg),
+    .inputBits(inData),
+    .instruction(instrShiftReg),
 
     .lastBit0(shiftedBit0),
     .lastBit1(shiftedBit1)
 );
 
-control_block v3(
+controlUnit v3(
     .start(start),
     .reset(reset),
     .clock(clock),
@@ -45,7 +45,7 @@ control_block v3(
     .shiftedBit1(shiftedBit1),
 
     .ready(ready),
-    .ctrl_counter(ctrl_counter),
-    .ctrl_shift_reg(ctrl_shift_reg)
+    .instrCnt(instrCnt),
+    .instrShiftReg(instrShiftReg)
 );
 endmodule

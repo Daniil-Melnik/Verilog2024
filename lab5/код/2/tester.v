@@ -50,22 +50,22 @@ endmodule
 
 module main_tester();
 wire clock, reset, start, ready;
-wire [7:0] in_data;
-wire [7:0] out_data;
+wire [7:0] inData;
+wire [7:0] outData;
 tests v1(
     .start(start),
     .reset(reset),
     .clock(clock),
     .ready(ready),
-    .x(in_data)
+    .x(inData)
 );
 main v2(
     .start(start),
     .reset(reset),
     .clock(clock),
-    .in_data(in_data),
+    .inData(inData),
 
     .ready(ready),
-    .outDec(out_data)
+    .outDec(outData)
 );
 endmodule
