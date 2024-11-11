@@ -8,7 +8,8 @@ module controlUnit
 
         output reg ready, // готовность
         output reg [2 : 0] instrCnt, // номер инструкции из счётчика
-        output reg [1 : 0] instrSiftReg // номер инструкции из регистра
+        output reg [1 : 0] instrSiftReg, // номер инструкции из регистра
+		  output wire [1 : 0] currSt_out
     );
     parameter max = 4'b1000; // максимальное кол-во бит последовательности
     parameter initialNumber = 4'b0000; // начальное состояние счётчика
@@ -25,6 +26,7 @@ module controlUnit
     begin
         currentState = reset ? initState: nextState; // сброс / переход
     end
+	 assign currSt_out = currentState;
     always @ (*)
     begin
         case (currentState)

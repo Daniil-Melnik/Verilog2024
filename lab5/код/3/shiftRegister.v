@@ -17,11 +17,13 @@ module shiftRegister
     input wire [1 : 0] instruction, // инструкция к выполнению
 
     output wire lastBit0, // сдвинутый бит по обратной связи
-    output wire lastBit1
+    output wire lastBit1,
+	 output wire [nBits - 1 : 0] reg_out
 );
 reg [nBits - 1 : 0] localMemory; // локальная память
 assign lastBit0 = localMemory[nBits - 1];
 assign lastBit1 = localMemory[nBits - 2];
+assign reg_out = localMemory;
 always @(posedge clock, posedge reset)
 begin
     if (reset) // сброс

@@ -36,7 +36,7 @@ module controlUnit
                 nextState = loadState;
                 ready = 0;
                 instrShiftReg = 0;
-                instrCnt = 2'b11;
+                instrCnt = 3'b110;
             end
         end
         loadState:

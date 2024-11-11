@@ -11,12 +11,12 @@ module descriptor
     
 always @(numBin) begin // мультиплексор
     case (numBin)
-        0: result = 8'b11111100;
-        1: result = 8'b01100000;
-        2: result = 8'b11011010;
-        3: result = 8'b11110010;
-        4: result = 8'b01100110;
-        default: result = 8'b00000001;
+        0: result = 8'b00000011;
+        1: result = 8'b10011111;
+        2: result = 8'b00100101;
+        3: result = 8'b00001101;
+        4: result = 8'b10011001;
+        default: result = 8'b11111110;
     endcase
 end
 
