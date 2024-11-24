@@ -43,7 +43,7 @@ module controlUnit
                 nextState = reset_s ? initState : loadState;
                 ready = 0;
                 instrSiftReg = 0;
-                instrCnt = 2'b11;
+                instrCnt = 2'b011;
             end
         end
         loadState: // загружаем последовательность
@@ -63,7 +63,7 @@ module controlUnit
         finalState: // когда сосвсем сдвинулись - конец
         begin
             ready = 1;
-            instrCnt = 2'b10;
+            instrCnt = 2'b010;
             instrSiftReg = 2'b00;
             nextState = reset_s ? initState : initState;
         end
@@ -72,7 +72,7 @@ module controlUnit
             nextState = loadState;
             ready = 0;
             instrSiftReg = 2'b00;
-            instrCnt = 2'b11;
+            instrCnt = 2'b011;
         end
         endcase
     end
