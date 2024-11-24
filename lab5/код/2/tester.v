@@ -21,8 +21,8 @@ initial begin
     #5;
     repeat (length)
     begin
-        //x = $urandom%20; //в Quartus модуль тестирования не должен пользоваться
-	x = 8'b01010101; //в Quartus модуль тестирования не должен пользоваться
+        //x = $urandom%20;
+	x = 8'b01010101;
 		start = 1;
         // вечный цикл ожидания ready
         for(j = 1; j < length; j = j + 1)

@@ -28,6 +28,8 @@ always @(posedge clock or posedge reset) begin
     clk = reset ? 0 : clk + 1;
 end
 
+assign clk_out = clk[24];
+
 counterUnit v1(
     .reset(reset),
     .clock(clk[24]),

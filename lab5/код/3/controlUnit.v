@@ -22,10 +22,15 @@ module controlUnit
         finalState = 2'b11; // окончания
 
     reg [1:0] currentState, nextState; // состояния автомата
-    always @(posedge clock or posedge reset) // переход по состояниям
+	 wire reset_s;
+	 
+	 assign reset_s = reset;
+	 
+    always @(posedge clock or posedge reset_s) // переход по состояниям
     begin
-        currentState = reset ? initState: nextState; // сброс / переход
+      currentState = reset_s ? initState: nextState; // сброс / переход
     end
+	 
 	 assign currSt_out = currentState;
     always @ (*)
     begin
@@ -35,7 +40,7 @@ module controlUnit
             // нажали старт => в состояние загрузки
             if (start)
             begin
-                nextState = loadState;
+                nextState = reset_s ? initState : loadState;
                 ready = 0;
                 instrSiftReg = 0;
                 instrCnt = 2'b11;
@@ -43,7 +48,7 @@ module controlUnit
         end
         loadState: // загружаем последовательность
         begin
-            nextState = shiftState;
+            nextState = reset_s ? initState : shiftState;
             ready = 0;
             instrSiftReg = 2'b11;
             instrCnt = 3'b100;
@@ -53,14 +58,14 @@ module controlUnit
             ready = 0;
             instrCnt = {1'b0, shiftedBit0, shiftedBit1};
             instrSiftReg = 2'b10;
-            nextState = nShifted == max ? finalState: currentState;
+            nextState = reset_s ? initState : nShifted == max ? finalState : currentState;
         end
         finalState: // когда сосвсем сдвинулись - конец
         begin
             ready = 1;
             instrCnt = 2'b10;
             instrSiftReg = 2'b00;
-            nextState = initState;
+            nextState = reset_s ? initState : initState;
         end
         default:
         begin
@@ -71,9 +76,9 @@ module controlUnit
         end
         endcase
     end
-    always @(negedge clock or posedge reset)
+    always @(negedge clock or posedge reset_s)
     begin
-        if(reset)
+        if(reset_s)
             nShifted = initialNumber;
         else if(currentState != shiftState)
             nShifted = initialNumber;

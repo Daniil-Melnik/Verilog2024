@@ -1,21 +1,23 @@
 module descriptor
 #
     (
-        parameter nIn = 4, // размерноесть двоичного значения
-        parameter nOut = 8 // размерноесть результата на цифры
+        parameter nIn = 4, // размерность двоичного значения
+        parameter nOut = 8 // размерность результата на цифры
     )
     (
         input wire [nIn - 1 : 0] numBin,
         output reg [nOut - 1 : 0] result
     );
-always @(numBin) begin
+    
+always @(numBin) begin // мультиплексор
     case (numBin)
-        0: assign result = 8'b11111100;
-        1: assign result = 8'b01100000;
-        2: assign result = 8'b11011010;
-        3: assign result = 8'b11110010;
-        4: assign result = 8'b01100110;
-        default: assign result = 8'b00000001;
+        0: result = 8'b00000011;
+        1: result = 8'b10011111;
+        2: result = 8'b00100101;
+        3: result = 8'b00001101;
+        4: result = 8'b10011001;
+        default: result = 8'b11111110;
     endcase
-    end
+end
+
 endmodule
